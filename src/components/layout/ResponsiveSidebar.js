@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import logo from '../assets/images/logo.png';
 
-
+const MenuIcon = () => <span>☰</span>;
 const CloseIcon = () => <span>✕</span>;
 
 const ResponsiveSidebar = ({ isOpen, onClose, navItems, activePath }) => {
@@ -12,10 +12,6 @@ const ResponsiveSidebar = ({ isOpen, onClose, navItems, activePath }) => {
       <SidebarOverlay isOpen={isOpen} onClick={onClose} />
       <SidebarContainer $isOpen={isOpen}>
         <SidebarHeader>
-          <Logo>
-            <LogoImg src={logo} alt="마켓봇 로고" />
-            <LogoText>마켓봇</LogoText>
-          </Logo>
           <CloseButton onClick={onClose}>
             <CloseIcon />
           </CloseButton>
@@ -65,8 +61,8 @@ const SidebarContainer = styled.aside`
   position: fixed;
   top: 0;
   left: 0;
-  width: 280px;
-  height: 100%;
+  bottom: 0;
+  width: 280px;  
   background-color: #FFFFFF;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
   z-index: 100;
@@ -85,7 +81,7 @@ const SidebarHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
+  padding: 32px;
   border-bottom: 1px solid #EEEEEE;
 `;
 
@@ -194,3 +190,4 @@ const SupportLink = styled.a`
 `;
 
 export default ResponsiveSidebar;
+

@@ -70,9 +70,6 @@ const ProductManagementPage = () => {
       <div className="product-management-container">
         <div className="page-header">
           <h1 className="page-title">상품 관리</h1>
-          <Button variant="primary" onClick={handleAddProduct}>
-            + 상품 추가
-          </Button>
         </div>
         
         <div className="search-container">
@@ -131,6 +128,9 @@ const ProductManagementPage = () => {
         
         {/* Add and Edit modals would be implemented as separate components */}
       </div>
+      <Button variant="primary" onClick={handleAddProduct}>
+            + 상품 추가
+          </Button>
     </ResponsiveDashboardLayout>
   );
 };
