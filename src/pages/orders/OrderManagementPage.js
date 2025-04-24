@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ResponsiveDashboardLayout from '../../components/layout/ResponsiveDashboardLayout';
 import OrderSearchFilter from './components/OrderSearchFilter';
 import OrderTable from './components/OrderTable';
 import OrderDetailModal from './components/OrderDetailModal';
@@ -87,28 +86,26 @@ const OrderShippingPage = () => {
   };
 
   return (
-    <ResponsiveDashboardLayout>
-      <div className="order-shipping-container">
-        <h1 className="page-title">주문/배송 관리</h1>
-        
-        <OrderSearchFilter 
-          onSearchChange={handleSearchChange} 
-          onFilterChange={handleFilterChange} 
+    <div className="order-shipping-container">
+      <h1 className="page-title">주문/배송 관리</h1>
+      
+      <OrderSearchFilter 
+        onSearchChange={handleSearchChange} 
+        onFilterChange={handleFilterChange} 
+      />
+      
+      <OrderTable 
+        orders={orders} 
+        onOrderSelect={handleOrderSelect} 
+      />
+      
+      {isModalOpen && (
+        <OrderDetailModal 
+          order={selectedOrder} 
+          onClose={handleCloseModal} 
         />
-        
-        <OrderTable 
-          orders={orders} 
-          onOrderSelect={handleOrderSelect} 
-        />
-        
-        {isModalOpen && (
-          <OrderDetailModal 
-            order={selectedOrder} 
-            onClose={handleCloseModal} 
-          />
-        )}
-      </div>
-    </ResponsiveDashboardLayout>
+      )}
+    </div>
   );
 };
 

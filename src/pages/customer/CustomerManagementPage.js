@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ResponsiveDashboardLayout from '../../components/layout/ResponsiveDashboardLayout';
 import CustomerSearchFilter from '../customer/components/CustomerSearchFilter';
 import CustomerTable from '../customer/components/CustomerTable';
 import CustomerDetailModal from '../customer/components/CustomerDetailModal';
@@ -65,28 +64,26 @@ const CustomerManagementPage = () => {
   };
 
   return (
-    <ResponsiveDashboardLayout>
-      <div className="customer-management-container">
-        <h1 className="page-title">고객 관리</h1>
-        
-        <CustomerSearchFilter 
-          onSearchChange={handleSearchChange} 
-          onFilterChange={handleFilterChange} 
+    <div className="customer-management-container">
+      <h1 className="page-title">고객 관리</h1>
+      
+      <CustomerSearchFilter 
+        onSearchChange={handleSearchChange} 
+        onFilterChange={handleFilterChange} 
+      />
+      
+      <CustomerTable 
+        customers={customers} 
+        onCustomerSelect={handleCustomerSelect} 
+      />
+      
+      {isModalOpen && (
+        <CustomerDetailModal 
+          customer={selectedCustomer} 
+          onClose={handleCloseModal} 
         />
-        
-        <CustomerTable 
-          customers={customers} 
-          onCustomerSelect={handleCustomerSelect} 
-        />
-        
-        {isModalOpen && (
-          <CustomerDetailModal 
-            customer={selectedCustomer} 
-            onClose={handleCloseModal} 
-          />
-        )}
-      </div>
-    </ResponsiveDashboardLayout>
+      )}
+    </div>
   );
 };
 

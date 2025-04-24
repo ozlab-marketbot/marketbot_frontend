@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import ResponsiveSidebar from './ResponsiveSidebar';
+import NotificationPopup from '../notifications/NotificationPopup';
+import UserSettingsPopup from '../user/UserSettingsPopup';
 import logo from '../assets/images/logo.png';
 
 // Icons (you can replace these with actual icon components)
@@ -19,6 +21,8 @@ const UserIcon      = () => <span>👤</span>;
 const ResponsiveDashboardLayout = ({ children }) => {
   // 1) Start closed
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [userSettingsOpen, setUserSettingsOpen] = useState(false);
   const location = useLocation();
 
   const navItems = [
@@ -34,6 +38,32 @@ const ResponsiveDashboardLayout = ({ children }) => {
   const toggleSidebar = () => {
     setSidebarOpen(prev => !prev);
   };
+
+  const toggleNotification = () => {
+    setNotificationOpen(prev => !prev);
+    if (userSettingsOpen) setUserSettingsOpen(false);
+  };
+
+  const toggleUserSettings = () => {
+    setUserSettingsOpen(prev => !prev);
+    if (notificationOpen) setNotificationOpen(false);
+  };
+
+  // Close popups when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (notificationOpen || userSettingsOpen) {
+        const isClickInside = event.target.closest('.popup-trigger');
+        if (!isClickInside) {
+          setNotificationOpen(false);
+          setUserSettingsOpen(false);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [notificationOpen, userSettingsOpen]);
 
   return (
     <LayoutContainer>
@@ -54,27 +84,35 @@ const ResponsiveDashboardLayout = ({ children }) => {
 
       <MainContent>
         <Header>
-
-        <HeaderCenter>
-          <Link to="/dashboard" style={{ textDecoration: 'none' }}>
-            <Logo style={{ cursor: 'pointer' }}>
-              <LogoImg src={logo} alt="마켓봇 로고" />
-              <LogoText>마켓봇</LogoText>
-            </Logo>
-          </Link>
-        </HeaderCenter>
+          <HeaderCenter>
+            <Link to="/dashboard" style={{ textDecoration: 'none' }}>
+              <Logo style={{ cursor: 'pointer' }}>
+                <LogoImg src={logo} alt="마켓봇 로고" />
+                <LogoText>마켓봇</LogoText>
+              </Logo>
+            </Link>
+          </HeaderCenter>
 
           <HeaderRight>
-            <HeaderButton>
+            <HeaderButton className="popup-trigger" onClick={toggleNotification}>
               <BellIcon />
               <NotificationBadge>3</NotificationBadge>
             </HeaderButton>
-            <UserProfile>
+            <NotificationPopup 
+              isOpen={notificationOpen} 
+              onClose={() => setNotificationOpen(false)} 
+            />
+            
+            <UserProfile className="popup-trigger" onClick={toggleUserSettings}>
               <UserAvatar>
                 <UserIcon />
               </UserAvatar>
               <UserName>사용자</UserName>
             </UserProfile>
+            <UserSettingsPopup 
+              isOpen={userSettingsOpen} 
+              onClose={() => setUserSettingsOpen(false)} 
+            />
           </HeaderRight>
         </Header>
 

@@ -6,63 +6,51 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 const AuthContext = createContext(null) ;
 
+// Temporary user data for development
+const TEMP_USERS = [
+  {
+    email: 'test@example.com',
+    password: 'password123',
+    name: 'Test User',
+    role: 'admin'
+  }
+];
+
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (token) {
-          // For testing with dummy token
-          if (token === 'dummyToken') {
-            setCurrentUser({ name: 'Test User', email: 'example@example.com' });
-          } 
-          else {
-            const user = await authService.getCurrentUser();
-            setCurrentUser(user);
-          }
-        }
-      } catch (err) {
-        setError(err.message);
-        localStorage.removeItem('token');
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-    checkAuthStatus();
+    // Check if user is logged in on initial load
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setCurrentUser(JSON.parse(storedUser));
+    }
+    setLoading(false);
   }, []);
 
-  // Fix: Properly define login as a const function inside the component
   const login = async (email, password) => {
     try {
       setLoading(true);
-      const response = await axios.post(`${API_URL}/auth/login`, { email, password });
-      if (response.data.token) {
-        // Store both user data and token
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-        localStorage.setItem('token', response.data.token);
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Check against temporary users
+      const user = TEMP_USERS.find(u => u.email === email && u.password === password);
+      
+      if (user) {
+        const userData = {
+          email: user.email,
+          name: user.name,
+          role: user.role
+        };
+        setCurrentUser(userData);
+        localStorage.setItem('user', JSON.stringify(userData));
+        return userData;
+      } else {
+        throw new Error('Invalid email or password');
       }
-      setCurrentUser(response.data.user);
-      return response.data;
-    } catch (error) {
-      setError(error.response?.data?.message || 'Login failed');
-      throw error.response?.data || { message: 'Login failed' };
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const signup = async (userData) => {
-    try {
-      setLoading(true);
-      const { user, token } = await authService.signup(userData);
-      localStorage.setItem('token', token);
-      setCurrentUser(user);
-      return user;
     } catch (err) {
       setError(err.message);
       throw err;
@@ -71,15 +59,40 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = async () => {
+  const signup = async (userData) => {
     try {
-      await authService.logout();
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      setCurrentUser(null);
+      setLoading(true);
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Check if email already exists
+      if (TEMP_USERS.some(u => u.email === userData.email)) {
+        throw new Error('Email already exists');
+      }
+      
+      // Add new user to temporary users
+      TEMP_USERS.push(userData);
+      
+      const newUser = {
+        email: userData.email,
+        name: userData.name,
+        role: 'user'
+      };
+      
+      setCurrentUser(newUser);
+      localStorage.setItem('user', JSON.stringify(newUser));
+      return newUser;
     } catch (err) {
       setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const logout = () => {
+    localStorage.removeItem('user');
+    setCurrentUser(null);
   };
 
   const forgotPassword = async (email) => {

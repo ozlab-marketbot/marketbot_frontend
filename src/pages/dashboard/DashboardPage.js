@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import ResponsiveDashboardLayout from '../../components/layout/ResponsiveDashboardLayout';
 
 const DashboardPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,61 +22,59 @@ const DashboardPage = () => {
   ];
   
   return (
-    <ResponsiveDashboardLayout title="대시보드">
-      <DashboardContent>
-        <WelcomeSection>
-          <WelcomeHeading>안녕하세요, 사용자님!</WelcomeHeading>
-          <WelcomeSubheading>오늘의 판매 현황을 확인하세요.</WelcomeSubheading>
-        </WelcomeSection>
+    <DashboardContent>
+      <WelcomeSection>
+        <WelcomeHeading>안녕하세요, 사용자님!</WelcomeHeading>
+        <WelcomeSubheading>오늘의 판매 현황을 확인하세요.</WelcomeSubheading>
+      </WelcomeSection>
+      
+      <StatsGrid>
+        {stats.map(stat => (
+          <StatCard key={stat.id}>
+            <StatTitle>{stat.title}</StatTitle>
+            <StatValueContainer>
+              <StatValue>{stat.value}</StatValue>
+              {stat.trend && (
+                <StatTrend trendUp={stat.trendUp}>
+                  {stat.trend}
+                </StatTrend>
+              )}
+            </StatValueContainer>
+          </StatCard>
+        ))}
+      </StatsGrid>
+      
+      <DashboardSections>
+        <Section>
+          <SectionHeader>
+            <SectionTitle>최근 활동</SectionTitle>
+            <ViewAllLink href="#">전체 보기</ViewAllLink>
+          </SectionHeader>
+          <ActivityList>
+            {activities.map(activity => (
+              <ActivityItem key={activity.id}>
+                <ActivityIcon type={activity.type} />
+                <ActivityContent>
+                  <ActivityMessage>{activity.message}</ActivityMessage>
+                  <ActivityTime>{activity.time}</ActivityTime>
+                </ActivityContent>
+              </ActivityItem>
+            ))}
+          </ActivityList>
+        </Section>
         
-        <StatsGrid>
-          {stats.map(stat => (
-            <StatCard key={stat.id}>
-              <StatTitle>{stat.title}</StatTitle>
-              <StatValueContainer>
-                <StatValue>{stat.value}</StatValue>
-                {stat.trend && (
-                  <StatTrend trendUp={stat.trendUp}>
-                    {stat.trend}
-                  </StatTrend>
-                )}
-              </StatValueContainer>
-            </StatCard>
-          ))}
-        </StatsGrid>
-        
-        <DashboardSections>
-          <Section>
-            <SectionHeader>
-              <SectionTitle>최근 활동</SectionTitle>
-              <ViewAllLink href="#">전체 보기</ViewAllLink>
-            </SectionHeader>
-            <ActivityList>
-              {activities.map(activity => (
-                <ActivityItem key={activity.id}>
-                  <ActivityIcon type={activity.type} />
-                  <ActivityContent>
-                    <ActivityMessage>{activity.message}</ActivityMessage>
-                    <ActivityTime>{activity.time}</ActivityTime>
-                  </ActivityContent>
-                </ActivityItem>
-              ))}
-            </ActivityList>
-          </Section>
-          
-          <Section>
-            <SectionHeader>
-              <SectionTitle>판매 통계</SectionTitle>
-              <ViewAllLink href="#">자세히 보기</ViewAllLink>
-            </SectionHeader>
-            <ChartContainer>
-              {/* Chart component will be implemented later */}
-              <ChartPlaceholder>판매 통계 차트가 표시될 영역입니다.</ChartPlaceholder>
-            </ChartContainer>
-          </Section>
-        </DashboardSections>
-      </DashboardContent>
-    </ResponsiveDashboardLayout>
+        <Section>
+          <SectionHeader>
+            <SectionTitle>판매 통계</SectionTitle>
+            <ViewAllLink href="#">자세히 보기</ViewAllLink>
+          </SectionHeader>
+          <ChartContainer>
+            {/* Chart component will be implemented later */}
+            <ChartPlaceholder>판매 통계 차트가 표시될 영역입니다.</ChartPlaceholder>
+          </ChartContainer>
+        </Section>
+      </DashboardSections>
+    </DashboardContent>
   );
 };
 

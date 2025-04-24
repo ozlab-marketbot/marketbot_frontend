@@ -12,60 +12,78 @@ import { useAuth } from './contexts/AuthContext';
 import ProductManagementPage from './pages/products/ProjectManagementPage';
 import CustomerManagementPage from './pages/customer/CustomerManagementPage';
 import OrderManagementPage from './pages/orders/OrderManagementPage';
+import SalesStatisticsPage from './pages/statistics/SalesStatisticsPage';
+import SettingsPage from './pages/settings/SettingsPage';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 
 const App = () => {
+  const { currentUser, loading } = useAuth();
 
-  // PRESENTATION MODE: Always assume not logged in for auth pages
-  const currentUser = null;
-  
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <GlobalStyles />
       <Router>
         <Routes>
-          {/* Auth pages - will always show during presentation */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          {/* Public routes */}
+          <Route path="/login" element={!currentUser ? <LoginPage /> : <Navigate to="/dashboard" />} />
+          <Route path="/signup" element={!currentUser ? <SignupPage /> : <Navigate to="/dashboard" />} />
+          <Route path="/forgot-password" element={!currentUser ? <ForgotPasswordPage /> : <Navigate to="/dashboard" />} />
           
-          {/* Also add routes for the /auth/ paths if they're being used */}
-          <Route path="/auth/login" element={<LoginPage />} />
-          <Route path="/auth/signup" element={<SignupPage />} />
-          <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
+          {/* Protected routes */}
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <ResponsiveDashboardLayout>
+                <DashboardPage />
+              </ResponsiveDashboardLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/products" element={
+            <ProtectedRoute>
+              <ResponsiveDashboardLayout>
+                <ProductManagementPage />
+              </ResponsiveDashboardLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/customers" element={
+            <ProtectedRoute>
+              <ResponsiveDashboardLayout>
+                <CustomerManagementPage />
+              </ResponsiveDashboardLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/orders" element={
+            <ProtectedRoute>
+              <ResponsiveDashboardLayout>
+                <OrderManagementPage />
+              </ResponsiveDashboardLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/statistics" element={
+            <ProtectedRoute>
+              <ResponsiveDashboardLayout>
+                <SalesStatisticsPage />
+              </ResponsiveDashboardLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/settings" element={
+            <ProtectedRoute>
+              <ResponsiveDashboardLayout>
+                <SettingsPage />
+              </ResponsiveDashboardLayout>
+            </ProtectedRoute>
+          } />
           
-          {/* Add a route to view the dashboard during presentation */}
-          <Route path="/dashboard" element={<DashboardPage />}>
-            {routes.map((route) => (
-              <Route key={route.path} path={`/dashboard${route.path}`} element={route.element} />
-            ))}
-          </Route>
-
-          <Route path="/products" element={<ProductManagementPage />}>
-            {routes.map((route) => (
-              <Route key={route.path} path={`/products${route.path}`} element={route.element} />
-            ))}
-          </Route>
-
-          <Route path="/customers" element={<CustomerManagementPage />}>
-            {routes.map((route) => (
-              <Route key={route.path} path={`/customers${route.path}`} element={route.element} />
-            ))}
-          </Route>
-
-          <Route path="/orders" element={<OrderManagementPage />}>
-            {routes.map((route) => (
-              <Route key={route.path} path={`/orders${route.path}`} element={route.element} />
-            ))}
-          </Route>
-
-          {/* <Route path="/statistics" element={<StatisticsManagementPage />}>
-            {routes.map((route) => (
-              <Route key={route.path} path={`/products${route.path}`} element={route.element} />
-            ))}
-          </Route> */}
-          
-          {/* Redirect to login if no route matches */}
-          <Route path="*" element={<Navigate to="/login" />} />
+          {/* Redirect to dashboard if logged in, otherwise to login */}
+          <Route path="*" element={currentUser ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
         </Routes>
       </Router>
     </>
