@@ -89,15 +89,6 @@ const LoginPage = () => {
           </ForgotPasswordLink>
           
           <LoginButton type="submit">로그인</LoginButton>
-          
-          {/* Demo button for presentation */}
-          <ViewDashboardButton 
-            as={Link} 
-            to="/dashboard" 
-            style={{ textDecoration: 'none' }}
-          >
-            대시보드 미리보기 (데모)
-          </ViewDashboardButton>
         </Form>
         
         <SignupPrompt>
@@ -179,19 +170,6 @@ const LoginButton = styled(Button)`
   padding: 12px;
   font-size: 16px;
   font-weight: 600;
-`;
-
-const ViewDashboardButton = styled(Button)`
-  margin-top: 12px;
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  background-color: #4CAF50;
-  
-  &:hover {
-    background-color: #388E3C;
-  }
 `;
 
 const SignupPrompt = styled.div`

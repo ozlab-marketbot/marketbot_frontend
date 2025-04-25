@@ -31,18 +31,6 @@ const SettingsPage = () => {
             >
               알림 설정
             </SettingsNavItem>
-            <SettingsNavItem 
-              active={activeTab === 'marketplace'} 
-              onClick={() => setActiveTab('marketplace')}
-            >
-              마켓플레이스 설정
-            </SettingsNavItem>
-            <SettingsNavItem 
-              active={activeTab === 'api'} 
-              onClick={() => setActiveTab('api')}
-            >
-              API 설정
-            </SettingsNavItem>
           </SettingsNav>
         </SettingsSidebar>
 
@@ -122,57 +110,6 @@ const SettingsPage = () => {
                     <input type="checkbox" defaultChecked />
                     <span className="slider"></span>
                   </ToggleSwitch>
-                </FormGroup>
-              </SettingsForm>
-            </SettingsSection>
-          )}
-
-          {activeTab === 'marketplace' && (
-            <SettingsSection>
-              <SectionTitle>마켓플레이스 설정</SectionTitle>
-              <SettingsForm>
-                <FormGroup>
-                  <FormLabel>당근마켓</FormLabel>
-                  <ToggleSwitch>
-                    <input type="checkbox" defaultChecked />
-                    <span className="slider"></span>
-                  </ToggleSwitch>
-                </FormGroup>
-                <FormGroup>
-                  <FormLabel>번개장터</FormLabel>
-                  <ToggleSwitch>
-                    <input type="checkbox" defaultChecked />
-                    <span className="slider"></span>
-                  </ToggleSwitch>
-                </FormGroup>
-                <FormGroup>
-                  <FormLabel>중고나라</FormLabel>
-                  <ToggleSwitch>
-                    <input type="checkbox" />
-                    <span className="slider"></span>
-                  </ToggleSwitch>
-                </FormGroup>
-              </SettingsForm>
-            </SettingsSection>
-          )}
-
-          {activeTab === 'api' && (
-            <SettingsSection>
-              <SectionTitle>API 설정</SectionTitle>
-              <SettingsForm>
-                <FormGroup>
-                  <FormLabel>API 키</FormLabel>
-                  <ApiKeyContainer>
-                    <ApiKeyInput type="text" value="sk_test_1234567890" readOnly />
-                    <CopyButton>복사</CopyButton>
-                  </ApiKeyContainer>
-                </FormGroup>
-                <FormGroup>
-                  <FormLabel>API 시크릿</FormLabel>
-                  <ApiKeyContainer>
-                    <ApiKeyInput type="password" value="sk_test_1234567890" readOnly />
-                    <CopyButton>복사</CopyButton>
-                  </ApiKeyContainer>
                 </FormGroup>
               </SettingsForm>
             </SettingsSection>

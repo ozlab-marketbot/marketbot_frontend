@@ -1,17 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
 const UserSettingsPopup = ({ isOpen, onClose }) => {
-  const navigate = useNavigate();
-  const { currentUser, logout } = useAuth();
+  const { currentUser } = useAuth();
 
   if (!isOpen) return null;
 
-  const handleLogout = async () => {
-    await logout();
-    navigate('/login');
+  const handleLogout = () => {
+    // Clear localStorage
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    // Close popup
+    onClose();
+    // Refresh the page
+    window.location.href = '/login';
   };
 
   return (
@@ -27,19 +30,19 @@ const UserSettingsPopup = ({ isOpen, onClose }) => {
       </UserInfo>
       
       <MenuList>
-        <MenuItem onClick={() => navigate('/profile')}>
+        <MenuItem>
           <MenuItemIcon>👤</MenuItemIcon>
           <MenuItemText>프로필 설정</MenuItemText>
         </MenuItem>
-        <MenuItem onClick={() => navigate('/settings')}>
+        <MenuItem>
           <MenuItemIcon>⚙️</MenuItemIcon>
           <MenuItemText>계정 설정</MenuItemText>
         </MenuItem>
-        <MenuItem onClick={() => navigate('/notifications')}>
+        <MenuItem>
           <MenuItemIcon>🔔</MenuItemIcon>
           <MenuItemText>알림 설정</MenuItemText>
         </MenuItem>
-        <MenuItem onClick={() => navigate('/help')}>
+        <MenuItem>
           <MenuItemIcon>❓</MenuItemIcon>
           <MenuItemText>도움말</MenuItemText>
         </MenuItem>

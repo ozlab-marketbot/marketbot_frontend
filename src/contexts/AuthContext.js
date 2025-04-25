@@ -22,35 +22,67 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Check if user is logged in on initial load
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setCurrentUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
+    const checkAuth = () => {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        try {
+          const userData = JSON.parse(storedUser);
+          // Validate that the user data has required fields
+          if (userData && userData.email && userData.name) {
+            setCurrentUser(userData);
+          } else {
+            // If user data is invalid, clear it
+            clearAuth();
+          }
+        } catch (err) {
+          // If JSON parsing fails, clear the invalid data
+          clearAuth();
+        }
+      } else {
+        setCurrentUser(null);
+      }
+      setLoading(false);
+    };
+
+    // Clear any stale data on initial load
+    clearAuth();
+    checkAuth();
+    
+    // Listen for storage changes
+    window.addEventListener('storage', checkAuth);
+    return () => window.removeEventListener('storage', checkAuth);
   }, []);
+
+  const clearAuth = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    setCurrentUser(null);
+    setError(null);
+    setLoading(false);
+  };
 
   const login = async (email, password) => {
     try {
+      // Check against temporary users first without setting loading
+      const user = TEMP_USERS.find(u => u.email === email && u.password === password);
+      
+      if (!user) {
+        throw new Error('Invalid email or password');
+      }
+
+      // Only set loading for successful login attempt
       setLoading(true);
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Check against temporary users
-      const user = TEMP_USERS.find(u => u.email === email && u.password === password);
-      
-      if (user) {
-        const userData = {
-          email: user.email,
-          name: user.name,
-          role: user.role
-        };
-        setCurrentUser(userData);
-        localStorage.setItem('user', JSON.stringify(userData));
-        return userData;
-      } else {
-        throw new Error('Invalid email or password');
-      }
+      const userData = {
+        email: user.email,
+        name: user.name,
+        role: user.role
+      };
+      setCurrentUser(userData);
+      localStorage.setItem('user', JSON.stringify(userData));
+      return userData;
     } catch (err) {
       setError(err.message);
       throw err;
