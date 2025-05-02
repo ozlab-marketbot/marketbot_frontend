@@ -94,7 +94,7 @@ export const StatusBadge = styled.span`
 export const ActionButton = styled.button`
   background: none;
   border: none;
-  color: #2196f3;
+  color: ${props => props.theme.colors.primary};
   cursor: pointer;
   font-size: 14px;
   padding: 8px;
@@ -111,11 +111,11 @@ export const ActionButton = styled.button`
   `}
   
   &:hover {
-    background-color: #e3f2fd;
+    background-color: ${props => props.theme.colors.background.dark};
   }
   
   &:disabled {
-    color: #bdbdbd;
+    color: ${props => props.theme.colors.text.light};
     cursor: not-allowed;
     
     &:hover {
@@ -146,20 +146,20 @@ export const PageButton = styled.button`
   height: 36px;
   padding: 0 8px;
   border-radius: 4px;
-  border: 1px solid ${props => props.active ? '#2196f3' : '#e0e0e0'};
-  background-color: ${props => props.active ? '#e3f2fd' : '#fff'};
-  color: ${props => props.active ? '#2196f3' : '#757575'};
+  border: 1px solid ${props => props.active ? props.theme.colors.primary : props.theme.colors.border.light};
+  background-color: ${props => props.active ? props.theme.colors.background.dark : props.theme.colors.background.main};
+  color: ${props => props.active ? props.theme.colors.primary : props.theme.colors.text.secondary};
   cursor: pointer;
   transition: all 0.2s;
   
   &:hover:not(:disabled) {
-    border-color: #2196f3;
-    color: #2196f3;
+    border-color: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.colors.primary};
   }
   
   &:disabled {
-    background-color: #f5f5f5;
-    color: #bdbdbd;
+    background-color: ${props => props.theme.colors.background.dark};
+    color: ${props => props.theme.colors.text.light};
     cursor: not-allowed;
   }
 `;
@@ -306,14 +306,14 @@ export const Tab = styled.button`
   padding: 12px 16px;
   background: none;
   border: none;
-  border-bottom: 2px solid ${props => props.active ? '#2196f3' : 'transparent'};
-  color: ${props => props.active ? '#2196f3' : '#757575'};
+  border-bottom: 2px solid ${props => props.active ? props.theme.colors.primary : 'transparent'};
+  color: ${props => props.active ? props.theme.colors.primary : props.theme.colors.text.secondary};
   font-weight: ${props => props.active ? '600' : '400'};
   cursor: pointer;
   transition: all 0.2s;
   
   &:hover {
-    color: #2196f3;
+    color: ${props => props.theme.colors.primary};
   }
 `;
 

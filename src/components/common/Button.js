@@ -28,41 +28,43 @@ const Button = ({
 
 const buttonVariants = {
   primary: css`
-    background-color: #1E88E5;
-    color: #FFFFFF;
+    background-color: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.colors.background.main};
     
     &:hover:not(:disabled) {
-      background-color: #1976D2;
+      background-color: ${props => props.theme.colors.background.dark};
+      color: ${props => props.theme.colors.primary};
     }
     
     &:active:not(:disabled) {
-      background-color: #1565C0;
+      background-color: ${props => props.theme.colors.background.dark};
+      color: ${props => props.theme.colors.primary};
     }
   `,
   secondary: css`
-    background-color: #FFFFFF;
-    color: #1E88E5;
-    border: 1px solid #1E88E5;
+    background-color: ${props => props.theme.colors.background.main};
+    color: ${props => props.theme.colors.primary};
+    border: 1px solid ${props => props.theme.colors.primary};
     
     &:hover:not(:disabled) {
-      background-color: rgba(30, 136, 229, 0.05);
+      background-color: ${props => props.theme.colors.background.dark};
     }
     
     &:active:not(:disabled) {
-      background-color: rgba(30, 136, 229, 0.1);
+      background-color: ${props => props.theme.colors.background.dark};
     }
   `,
   outline: css`
     background-color: transparent;
-    color: #616161;
-    border: 1px solid #E0E0E0;
+    color: ${props => props.theme.colors.text.secondary};
+    border: 1px solid ${props => props.theme.colors.border.light};
     
     &:hover:not(:disabled) {
-      background-color: #F5F5F5;
+      background-color: ${props => props.theme.colors.background.dark};
     }
     
     &:active:not(:disabled) {
-      background-color: #EEEEEE;
+      background-color: ${props => props.theme.colors.background.dark};
     }
   `,
   danger: css`

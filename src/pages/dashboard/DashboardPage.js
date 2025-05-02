@@ -152,6 +152,7 @@ const DashboardPage = () => {
                   type="monotone"
                   dataKey="sales"
                   stroke="#1E88E5"
+                  name="매출"
                   strokeWidth={2}
                   dot={{ r: 4 }}
                   activeDot={{ r: 6 }}
@@ -160,6 +161,7 @@ const DashboardPage = () => {
                   yAxisId="right"
                   type="monotone"
                   dataKey="orders"
+                  name="주문"
                   stroke="#4CAF50"
                   strokeWidth={2}
                   dot={{ r: 4 }}
@@ -272,7 +274,7 @@ const SectionTitle = styled.h2`
 
 const ViewAllLink = styled.a`
   font-size: 14px;
-  color: #1E88E5;
+  color: ${props => props.theme.colors.primary};
   text-decoration: none;
   font-weight: 500;
   
@@ -352,17 +354,17 @@ const TimeRangeSelector = styled.div`
 
 const TimeRangeButton = styled.button`
   padding: 6px 12px;
-  border: 1px solid ${props => props.active ? '#1E88E5' : '#E0E0E0'};
+  border: 1px solid ${props => props.active ? props.theme.colors.primary : props.theme.colors.border.light};
   border-radius: 6px;
-  background-color: ${props => props.active ? '#E3F2FD' : 'white'};
-  color: ${props => props.active ? '#1E88E5' : '#757575'};
+  background-color: ${props => props.active ? props.theme.colors.background.dark : props.theme.colors.background.main};
+  color: ${props => props.active ? props.theme.colors.primary : props.theme.colors.text.secondary};
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
   
   &:hover {
-    background-color: ${props => props.active ? '#E3F2FD' : '#F5F5F5'};
+    background-color: ${props => props.theme.colors.background.dark};
   }
 `;
 

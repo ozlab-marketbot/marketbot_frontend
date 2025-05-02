@@ -163,15 +163,15 @@ const SettingsNavItem = styled.button`
   background: none;
   border: none;
   border-radius: 8px;
-  color: ${props => props.active ? '#1E88E5' : '#757575'};
-  background-color: ${props => props.active ? '#E3F2FD' : 'transparent'};
+  color: ${props => props.active ? props.theme.colors.primary : props.theme.colors.text.secondary};
+  background-color: ${props => props.active ? props.theme.colors.background.dark : 'transparent'};
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
   
   &:hover {
-    background-color: ${props => props.active ? '#E3F2FD' : '#F5F5F5'};
+    background-color: ${props => props.active ? props.theme.colors.background.dark : props.theme.colors.background.dark};
   }
 `;
 
@@ -212,26 +212,26 @@ const FormLabel = styled.label`
 
 const FormInput = styled.input`
   padding: 8px 12px;
-  border: 1px solid #E0E0E0;
+  border: 1px solid ${props => props.theme.colors.border.light};
   border-radius: 8px;
   font-size: 14px;
   
   &:focus {
     outline: none;
-    border-color: #1E88E5;
+    border-color: ${props => props.theme.colors.primary};
   }
 `;
 
 const FormSelect = styled.select`
   padding: 8px 12px;
-  border: 1px solid #E0E0E0;
+  border: 1px solid ${props => props.theme.colors.border.light};
   border-radius: 8px;
   font-size: 14px;
-  background-color: white;
+  background-color: ${props => props.theme.colors.background.main};
   
   &:focus {
     outline: none;
-    border-color: #1E88E5;
+    border-color: ${props => props.theme.colors.primary};
   }
 `;
 
@@ -272,7 +272,7 @@ const ToggleSwitch = styled.label`
   }
   
   input:checked + .slider {
-    background-color: #1E88E5;
+    background-color: ${props => props.theme.colors.primary};
   }
   
   input:checked + .slider:before {
@@ -301,8 +301,8 @@ const ApiKeyInput = styled.input`
 
 const CopyButton = styled.button`
   padding: 8px 16px;
-  background-color: #1E88E5;
-  color: white;
+  background-color: ${props => props.theme.colors.primary};
+  color: ${props => props.theme.colors.background.main};
   border: none;
   border-radius: 8px;
   font-size: 14px;
@@ -310,7 +310,8 @@ const CopyButton = styled.button`
   cursor: pointer;
   
   &:hover {
-    background-color: #1976D2;
+    background-color: ${props => props.theme.colors.background.dark};
+    color: ${props => props.theme.colors.primary};
   }
 `;
 

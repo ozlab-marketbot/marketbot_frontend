@@ -5,6 +5,7 @@ import Button from '../../components/common/Button';
 import FormInput from '../../components/common/FormInput';
 import logo from '../../components/assets/images/logo.png'
 import { useAuth } from '../../contexts/AuthContext';
+import { FaArrowLeft } from 'react-icons/fa';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -53,6 +54,11 @@ const LoginPage = () => {
 
   return (
     <LoginContainer>
+      <BackButtonContainer>
+        <BackButton as={Link} to="/">
+          <span style={{marginRight: '6px'}}>&larr;</span> 메인 화면으로 돌아가기
+        </BackButton>
+      </BackButtonContainer>
       <LoginCard>
         <LogoContainer>
           <Logo src={logo} alt="마켓봇 로고" />
@@ -133,7 +139,7 @@ const Logo = styled.img`
 const LogoText = styled.h1`
   font-size: 28px;
   font-weight: 700;
-  color: #1E88E5;
+  color: hsl(0, 0%, 22%);
   margin: 0;
 `;
 
@@ -154,12 +160,12 @@ const Form = styled.form`
 const ForgotPasswordLink = styled(Link)`
   align-self: flex-end;
   font-size: 14px;
-  color: #616161;
+  color: #1E88E5;
   text-decoration: none;
   margin-top: -12px;
   
   &:hover {
-    color: #1E88E5;
+    color: #1565C0;
     text-decoration: underline;
   }
 `;
@@ -170,6 +176,12 @@ const LoginButton = styled(Button)`
   padding: 12px;
   font-size: 16px;
   font-weight: 600;
+  background-color: hsl(0, 0%, 22%);
+  color: #FFFFFF;
+  
+  &:hover {
+    background-color: hsl(0, 0%, 30%);
+  }
 `;
 
 const SignupPrompt = styled.div`
@@ -186,6 +198,7 @@ const SignupLink = styled(Link)`
   
   &:hover {
     text-decoration: underline;
+    color: #1565C0;
   }
 `;
 
@@ -197,6 +210,30 @@ const ErrorMessage = styled.div`
   padding: 8px;
   background-color: #ffebee;
   border-radius: 4px;
+`;
+
+const BackButtonContainer = styled.div`
+  position: absolute;
+  top: 32px;
+  right: 32px;
+  z-index: 10;
+`;
+
+const BackButton = styled(Button)`
+  background: none;
+  color: hsl(0, 0%, 22%);
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  &:hover {
+    text-decoration: underline;
+    background: none;
+    color: hsl(0, 0%, 30%);
+  }
 `;
 
 export default LoginPage;

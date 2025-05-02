@@ -15,6 +15,9 @@ import OrderManagementPage from './pages/orders/OrderManagementPage';
 import SalesStatisticsPage from './pages/statistics/SalesStatisticsPage';
 import SettingsPage from './pages/settings/SettingsPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import LandingPage from './pages/landing/LandingPage';
+import { ThemeProvider } from 'styled-components';
+import { theme } from './styles/theme';
 
 const App = () => {
   const { currentUser, loading } = useAuth();
@@ -24,10 +27,11 @@ const App = () => {
   }
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <GlobalStyles />
       <Routes>
         {/* Public routes */}
+        <Route path="/" element={!currentUser ? <LandingPage /> : <Navigate to="/dashboard" />} />
         <Route path="/login" element={!currentUser ? <LoginPage /> : <Navigate to="/dashboard" />} />
         <Route path="/signup" element={!currentUser ? <SignupPage /> : <Navigate to="/dashboard" />} />
         <Route path="/forgot-password" element={!currentUser ? <ForgotPasswordPage /> : <Navigate to="/dashboard" />} />
@@ -81,10 +85,10 @@ const App = () => {
           </ProtectedRoute>
         } />
         
-        {/* Redirect to dashboard if logged in, otherwise to login */}
-        <Route path="*" element={currentUser ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
+        {/* Redirect to dashboard if logged in, otherwise to landing page */}
+        <Route path="*" element={currentUser ? <Navigate to="/dashboard" /> : <Navigate to="/" />} />
       </Routes>
-    </>
+    </ThemeProvider>
   );
 };
 

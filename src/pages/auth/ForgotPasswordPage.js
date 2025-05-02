@@ -37,6 +37,11 @@ const ForgotPasswordPage = () => {
 
   return (
     <ForgotPasswordContainer>
+      <ForgotBackButtonContainer>
+        <ForgotBackButton as={Link} to="/">
+          <span style={{marginRight: '6px'}}>&larr;</span> 메인 화면으로 돌아가기
+        </ForgotBackButton>
+      </ForgotBackButtonContainer>
       <ForgotPasswordCard>
         <LogoContainer>
           <Logo src={logo} alt="마켓봇 로고" />
@@ -63,7 +68,7 @@ const ForgotPasswordPage = () => {
               
               <ButtonContainer>
                 <ResetButton type="submit">비밀번호 재설정 링크 보내기</ResetButton>
-                <BackButton as={Link} to="/auth/login" variant="secondary">
+                <BackButton as={Link} to="/login" variant="secondary">
                   로그인으로 돌아가기
                 </BackButton>
               </ButtonContainer>
@@ -79,7 +84,7 @@ const ForgotPasswordPage = () => {
             <SuccessNotes>
               메일이 도착하지 않았나요? 스팸함을 확인하시거나 다시 시도해주세요.
             </SuccessNotes>
-            <BackToLoginButton as={Link} to="/auth/login">
+            <BackToLoginButton as={Link} to="/login">
               로그인으로 돌아가기
             </BackToLoginButton>
           </SuccessContainer>
@@ -124,7 +129,7 @@ const Logo = styled.img`
 const LogoText = styled.h1`
   font-size: 28px;
   font-weight: 700;
-  color: #1E88E5;
+  color: hsl(0, 0%, 22%);
   margin: 0;
 `;
 
@@ -161,6 +166,8 @@ const ResetButton = styled(Button)`
   padding: 12px;
   font-size: 16px;
   font-weight: 600;
+  background-color: hsl(0, 0%, 22%);
+  color: #FFFFFF;
 `;
 
 const BackButton = styled(Button)`
@@ -168,6 +175,7 @@ const BackButton = styled(Button)`
   padding: 12px;
   font-size: 16px;
   font-weight: 600;
+  color: hsl(0, 0%, 22%);
 `;
 
 const SuccessContainer = styled.div`
@@ -214,6 +222,43 @@ const BackToLoginButton = styled(Button)`
   padding: 12px;
   font-size: 16px;
   font-weight: 600;
+`;
+
+const ForgotBackButtonContainer = styled.div`
+  position: absolute;
+  top: 32px;
+  right: 32px;
+  z-index: 10;
+`;
+
+const ForgotBackButton = styled(Button)`
+  background: none;
+  color: hsl(0, 0%, 22%);
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  &:hover {
+    text-decoration: underline;
+    background: none;
+    color: hsl(0, 0%, 30%);
+  }
+`;
+
+const ForgotPasswordLink = styled(Link)`
+  align-self: flex-end;
+  font-size: 14px;
+  color: #616161;
+  text-decoration: none;
+  margin-top: -12px;
+  
+  &:hover {
+    color: hsl(0, 0%, 22%);
+    text-decoration: underline;
+  }
 `;
 
 export default ForgotPasswordPage;

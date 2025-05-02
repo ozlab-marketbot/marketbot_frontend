@@ -11,7 +11,7 @@ const TEMP_USERS = [
   {
     email: 'test@example.com',
     password: 'password123',
-    name: 'Test User',
+    name: '사용자',
     role: 'admin'
   }
 ];

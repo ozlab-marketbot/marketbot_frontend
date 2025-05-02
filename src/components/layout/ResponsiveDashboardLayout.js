@@ -221,5 +221,8 @@ const LogoImg = styled.img`
   width: 32px; height: 32px; margin-right: 8px;
 `;
 const LogoText = styled.h1`
-  font-size: 20px; font-weight: 700; color: #1E88E5; margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: ${props => props.theme.colors.primary};
+  margin: 0;
 `;

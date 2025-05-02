@@ -55,12 +55,17 @@ const SignupPage = () => {
     if (validate()) {
       // Signup logic will be implemented later
       // For now, navigate to login
-      navigate('/auth/login');
+      navigate('/login');
     }
   };
 
   return (
     <SignupContainer>
+      <SignupBackButtonContainer>
+        <SignupBackButton as={Link} to="/">
+          <span style={{marginRight: '6px'}}>&larr;</span> 메인 화면으로 돌아가기
+        </SignupBackButton>
+      </SignupBackButtonContainer>
       <SignupCard>
         <LogoContainer>
           <Logo src={logo} alt="마켓봇 로고" />
@@ -128,7 +133,7 @@ const SignupPage = () => {
         </Form>
         
         <LoginPrompt>
-          이미 계정이 있으신가요? <LoginLink to="/auth/login">로그인</LoginLink>
+          이미 계정이 있으신가요? <LoginLink to="/login">로그인</LoginLink>
         </LoginPrompt>
       </SignupCard>
     </SignupContainer>
@@ -170,7 +175,7 @@ const Logo = styled.img`
 const LogoText = styled.h1`
   font-size: 28px;
   font-weight: 700;
-  color: #1E88E5;
+  color: hsl(0, 0%, 22%);
   margin: 0;
 `;
 
@@ -202,7 +207,7 @@ const CheckboxLabel = styled.label`
   color: #616161;
   
   a {
-    color: #1E88E5;
+    color: hsl(0, 0%, 22%);
     text-decoration: none;
     
     &:hover {
@@ -223,6 +228,8 @@ const SignupButton = styled(Button)`
   padding: 12px;
   font-size: 16px;
   font-weight: 600;
+  background-color: hsl(0, 0%, 22%);
+  color: #FFFFFF;
 `;
 
 const LoginPrompt = styled.div`
@@ -233,12 +240,36 @@ const LoginPrompt = styled.div`
 `;
 
 const LoginLink = styled(Link)`
-  color: #1E88E5;
+  color: hsl(0, 0%, 22%);
   font-weight: 500;
   text-decoration: none;
   
   &:hover {
     text-decoration: underline;
+  }
+`;
+
+const SignupBackButtonContainer = styled.div`
+  position: absolute;
+  top: 32px;
+  right: 32px;
+  z-index: 10;
+`;
+
+const SignupBackButton = styled(Button)`
+  background: none;
+  color: hsl(0, 0%, 22%);
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  &:hover {
+    text-decoration: underline;
+    background: none;
+    color: hsl(0, 0%, 30%);
   }
 `;
 

@@ -135,6 +135,7 @@ const SalesStatisticsPage = () => {
                   yAxisId="left"
                   type="monotone"
                   dataKey="sales"
+                  name="매출"
                   stroke="#1E88E5"
                   strokeWidth={2}
                   dot={{ r: 4 }}
@@ -144,6 +145,7 @@ const SalesStatisticsPage = () => {
                   yAxisId="right"
                   type="monotone"
                   dataKey="orders"
+                  name="주문"
                   stroke="#4CAF50"
                   strokeWidth={2}
                   dot={{ r: 4 }}
