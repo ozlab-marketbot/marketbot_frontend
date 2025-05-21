@@ -1,5 +1,5 @@
-import React from "react";
-import "./styles/stock.css";
+import React, { useState } from 'react';
+// import "./styles/stock.css";
 
 const products = [
   {
