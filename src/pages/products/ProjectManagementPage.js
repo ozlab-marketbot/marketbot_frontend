@@ -9,16 +9,14 @@ const ProductManagementPage = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
   const [formData, setFormData] = useState({
-    title: '',
-    category1: '',
-    lprice: '',
-    productId: '',
-    productType: '1',
-    image: '',
-    link: '',
-    mallName: '',
-    maker: ''
+    name: '',
+    price: '',
+    status: 'SALE',
+    origin_product_no: '',
+    channel_product_no: '',
+    stock: ''
   });
 
   useEffect(() => {
@@ -33,7 +31,12 @@ const ProductManagementPage = () => {
 
   const handleAddProduct = () => {
     setFormData({
-      title: '', category1: '', lprice: '', productId: '', productType: '1', image: '', link: '', mallName: '', maker: ''
+      name: '',
+      price: '',
+      status: 'SALE',
+      origin_product_no: '',
+      channel_product_no: '',
+      stock: ''
     });
     setIsAddModalOpen(true);
   };
@@ -44,11 +47,11 @@ const ProductManagementPage = () => {
     setIsEditModalOpen(true);
   };
 
-  const handleDeleteProduct = (productId) => {
+  const handleDeleteProduct = (id) => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
-    axios.delete(`http://127.0.0.1:8000/api/products/${productId}/`)  // productId → id 로 변경 필요 시 수정
+    axios.delete(`http://127.0.0.1:8000/api/products/${id}/`)
       .then(() => {
-        setProducts(products.filter(p => p.productId !== productId));
+        setProducts(products.filter(p => p.id !== id));
       })
       .catch(err => {
         console.error("삭제 실패:", err);
@@ -73,9 +76,9 @@ const ProductManagementPage = () => {
   };
 
   const handleEditSubmit = () => {
-    axios.put(`http://127.0.0.1:8000/api/products/${formData.productId}/`, formData)
+    axios.put(`http://127.0.0.1:8000/api/products/${formData.id}/`, formData)
       .then(res => {
-        setProducts(products.map(p => p.productId === formData.productId ? res.data : p));
+        setProducts(products.map(p => p.id === formData.id ? res.data : p));
         setIsEditModalOpen(false);
       })
       .catch(err => {
@@ -84,11 +87,14 @@ const ProductManagementPage = () => {
       });
   };
 
-  const getStatusText = (productType) => productType === '1' ? '판매중' : '품절';
+  const getStatusText = (status) => {
+    if (status === 'SALE') return '판매중';
+    if (status === 'SUSPENSION') return '판매중지';
+    return '기타';
+  };
 
   const filteredProducts = products.filter(product =>
-    (product.title || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (product.category1 || '').toLowerCase().includes(searchTerm.toLowerCase())
+    (product.name || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -100,7 +106,7 @@ const ProductManagementPage = () => {
       <div className="search-container">
         <FormInput
           type="text"
-          placeholder="상품명 또는 카테고리로 검색"
+          placeholder="상품명 검색"
           value={searchTerm}
           onChange={handleSearchChange}
           icon="search"
@@ -112,22 +118,22 @@ const ProductManagementPage = () => {
           <thead>
             <tr>
               <th>상품명</th>
-              <th>카테고리</th>
               <th>가격</th>
+              <th>재고</th>
               <th>상태</th>
               <th>액션</th>
             </tr>
           </thead>
           <tbody>
             {filteredProducts.map((product) => (
-              <tr key={product.productId}>
-                <td>{product.title}</td>
-                <td>{product.category1}</td>
-                <td>{parseInt(product.lprice).toLocaleString()}원</td>
-                <td>{getStatusText(product.productType)}</td>
+              <tr key={product.channel_product_no}>
+                <td>{product.name}</td>
+                <td>{parseInt(product.price).toLocaleString()}원</td>
+                <td>{product.stock}</td>
+                <td>{getStatusText(product.status)}</td>
                 <td>
                   <Button variant="text" onClick={() => handleEditProduct(product)}>수정</Button>
-                  <Button variant="text" className="delete-button" onClick={() => handleDeleteProduct(product.productId)}>삭제</Button>
+                  <Button variant="text" className="delete-button" onClick={() => handleDeleteProduct(product.id)}>삭제</Button>
                 </td>
               </tr>
             ))}
@@ -138,10 +144,11 @@ const ProductManagementPage = () => {
       {isAddModalOpen && (
         <div className="modal">
           <h2>상품 추가</h2>
-          <input name="title" value={formData.title} onChange={handleFormChange} placeholder="상품명" />
-          <input name="category1" value={formData.category1} onChange={handleFormChange} placeholder="카테고리" />
-          <input name="lprice" value={formData.lprice} onChange={handleFormChange} placeholder="가격" />
-          <input name="productId" value={formData.productId} onChange={handleFormChange} placeholder="고유 ID" />
+          <input name="name" value={formData.name} onChange={handleFormChange} placeholder="상품명" />
+          <input name="price" value={formData.price} onChange={handleFormChange} placeholder="가격" />
+          <input name="stock" value={formData.stock} onChange={handleFormChange} placeholder="재고 수량" />
+          <input name="origin_product_no" value={formData.origin_product_no} onChange={handleFormChange} placeholder="원본 상품번호" />
+          <input name="channel_product_no" value={formData.channel_product_no} onChange={handleFormChange} placeholder="채널 상품번호" />
           <button onClick={handleAddSubmit}>등록</button>
           <button onClick={() => setIsAddModalOpen(false)}>취소</button>
         </div>
@@ -150,15 +157,20 @@ const ProductManagementPage = () => {
       {isEditModalOpen && (
         <div className="modal">
           <h2>상품 수정</h2>
-          <input name="title" value={formData.title} onChange={handleFormChange} placeholder="상품명" />
-          <input name="category1" value={formData.category1} onChange={handleFormChange} placeholder="카테고리" />
-          <input name="lprice" value={formData.lprice} onChange={handleFormChange} placeholder="가격" />
+          <input name="name" value={formData.name} onChange={handleFormChange} placeholder="상품명" />
+          <input name="price" value={formData.price} onChange={handleFormChange} placeholder="가격" />
+          <input name="stock" value={formData.stock} onChange={handleFormChange} placeholder="재고 수량" />
           <button onClick={handleEditSubmit}>수정</button>
           <button onClick={() => setIsEditModalOpen(false)}>취소</button>
         </div>
       )}
 
-      <Button variant="primary" onClick={handleAddProduct}>
+      {/* ✅ 고정 버튼 */}
+      <Button
+        variant="primary"
+        onClick={handleAddProduct}
+        className="fixed-add-button"
+      >
         + 상품 추가
       </Button>
     </div>
